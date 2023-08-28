@@ -12,7 +12,6 @@ URLS = {
             "div",
             {"class": "op-bio-card__title my-2"}
             ],
-        "function": clnr.otpp_clean_soup
     },
         
 
@@ -57,22 +56,13 @@ URLS = {
         "location": 
             [
             "https://www.cibc.com/en/about-cibc/corporate-governance/board-of-directors/board-members.html",
-            "h2",
+            'span',
             {"class": "subhead-medium-light"}
-            ],
-        "function" : clnr.cibc_clean_soup
+            ]
     },
 
                 
-        "Manulife" :
-            {
-            "location" : 
-                [
-                    "https://www.manulife.com/en/about/corporate-governance/board-of-directors.html",
-                    {"class" : "cmp-titletext"}
-                ],
-            "function" : clnr.manulife_clean_soup
-            },
+
                 
         "AIMCO" : 
             {
@@ -85,14 +75,26 @@ URLS = {
             "function" : clnr.aimco_clean_soup
             },
         
+             
+        "Manulife" :
+            {
+            "location" : 
+                [
+                    "https://www.manulife.com/en/about/corporate-governance/board-of-directors.html",
+                    "div",
+                    {"class" : "cmp-titletext"}
+                ],
+            "function" : clnr.manulife_clean_soup
+            },
+                
                 
         "NBC" : {
             "location":
                         
                 [
                     "https://www.nbc.ca/about-us/news-media/press-release/2023/20230421-nbc-election-directors.html",
-                    "tr", 
-                    #{"location2": "location3"}
+                    "div", 
+                    {"class": "text table_style aem-GridColumn aem-GridColumn--default--12"}
                 ],
             "function" : clnr.nbc_clean_soup
             },

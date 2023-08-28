@@ -21,8 +21,6 @@ import CleanerFunctions as clnr
 
 class Company:
     def __init__(self, companyName: str, soupLocation: dict, soup_cleaner = None):
-        
-        #initializations
         self.companyName = companyName
         self.soupLocation = soupLocation
         if soup_cleaner:
@@ -30,8 +28,11 @@ class Company:
 
     def scrape_website(self):        
         soup = self.dynamic_scraper()
-        names = self.default_cleaner(soup)
-        return names          
+        content = self.default_cleaner(soup)
+        if hasattr(self, 'soup_cleaner') and callable(self.soup_cleaner):
+            content = self.soup_cleaner(self, soup=content)
+            return content
+        return content
                 
     def default_cleaner(self, soup):
         contents = soup.find_all(self.soupLocation[1],self.soupLocation[2])
@@ -80,21 +81,21 @@ def initialize_company_objects():
             count_of_companies_not_initialized += 1
         else:
             if not isinstance(key, str):
-                print(key)
-                raise TypeError(f"company_name must be a string.")
-            if not isinstance(URLS[value], dict):
-                print(f"no souplocation in URLS[{self.companyName}]:")
-                print('''looking for dictionary: {["url", "html-tag", {"class" : "class-tag"}]}''')
+                raise TypeError(f"{key} company_name must be a string.")
+            if not isinstance(value, dict):
+                print("no souplocation in URLS[{self.companyName}]:")
+                print('''looking for dictionary: {["url", "html-tag", {"class" : "class-tag"}]}''')    
                 
             else:
                 soupLocation = value["location"]
                 companyName = key
-                if callable(value['function']):
+                if "function" in value and callable(value['function']):
                     soup_cleaner = value['function']
-                    my_objects[companyName] = Company(companyName, soupLocation, soup_cleaner)
+                    my_objects[companyName] = Company(companyName = companyName, soupLocation = soupLocation, soup_cleaner = soup_cleaner)
+                    count_of_companies_initialized += 1
                 else:
-                    my_objects[companyName] = Company(companyName, soupLocation)
-                count_of_companies_initialized += 1
+                    my_objects[companyName] = Company(companyName = companyName, soupLocation = soupLocation)
+                    count_of_companies_initialized += 1
     print("")
     print(f"un-initialized companies: {count_of_companies_not_initialized}")
     print(f"initialized companies: {count_of_companies_initialized}")

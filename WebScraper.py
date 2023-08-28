@@ -1,15 +1,24 @@
-
+import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from urls import URLS
 import CleanerFunctions as clnr
 import GetNames as getnames
-
+test = "CIBC"
 initializedObjects = getnames.initialize_company_objects()
 
 
+# values = soup.find_all('span',{"class": "subhead-medium-light"})
+# content = [content.text.strip() for content in values]
+# print(content)
 
-for key in list(initializedObjects.keys())[:5]:
+# data = values[test]
+# print(values)
+# names = [' '.join(name.split()) for name in data]
+# print(names)
+
+
+for key in list(initializedObjects.keys())[5:10]:
     print(" ")
     print("=========")
     print("")
@@ -24,11 +33,11 @@ for key in list(initializedObjects.keys())[:5]:
 
 
 # do do:
-# AIG//
-# AIMCO//
-# BDC//
-# BMO//
-# CANADA LIFE//
+# AIG
+# AIMCO
+# BDC
+# BMO
+# CANADA LIFE
 # CDIC
 # CDPQ
 # CIB
