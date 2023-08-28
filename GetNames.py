@@ -20,33 +20,24 @@ import CleanerFunctions as clnr
 
 
 class Company:
-    def __init__(self, companyName: str, soup_cleaner): 
+    def __init__(self, companyName: str, soupLocation: dict, soup_cleaner = None):
         
-        #initializations 
-        if not isinstance(companyName, str):
-            raise TypeError("company_name must be a string.")
-        else: 
-            self.companyName = companyName
-        
-        if not isinstance(URLS[self.companyName], dict):
-            print(f"no souplocation in URLS[{self.companyName}] - it should be a dictionary\n[url, html-tag, {{class = class-tag}}]")
-            
-        elif "location" in URLS[self.companyName]:
-            self.soupLocation = URLS[self.companyName]["location"]
-            print(f"{self.companyName} - souplocation initialized")
-            if "function" in URLS[self.companyName]["location"]:
-                self.soup_cleaner = soup_cleaner
-                
-                
-        
+        #initializations
+        self.companyName = companyName
+        self.soupLocation = soupLocation
+        if soup_cleaner:
+            self.soup_cleaner = soup_cleaner
+
+    def scrape_website(self):        
+        soup = self.dynamic_scraper()
+        names = self.default_cleaner(soup)
+        return names          
                 
     def default_cleaner(self, soup):
         contents = soup.find_all(self.soupLocation[1],self.soupLocation[2])
         values = [content.text.strip() for content in contents]
-
         names = {self.companyName : values }
         return names
-    
     
     def dynamic_scraper(self):
         url = self.soupLocation[0] # soupLocation = [url, html-tag, {class = class-tag}]    
@@ -61,7 +52,6 @@ class Company:
                 return soup, None
             except Exception as e:
                 return None, str(e)
-            
         with ThreadPoolExecutor() as executor:
             future = executor.submit(scraper_func, url)
             try:
@@ -73,17 +63,10 @@ class Company:
             print(f"An error occurred: {error_message}")
         return result
     
-    def scrape_website(self):        
-        soup = self.dynamic_scraper()
-        names = self.default_cleaner(self,soup)
-        return names
+
     
     
-# initialze classes:
-    # create Company object instances with a cleanup attribute for each company
-    # company_name = Company("name", name_clean_soup) ; 
-    # where name is in URLS[Keys] and
-    # name_clean_soup is in URLS[Keys]['function']
+
     
 def initialize_company_objects():
     my_objects = {}
@@ -96,12 +79,22 @@ def initialize_company_objects():
             print(URLS[key]['error_message'])
             count_of_companies_not_initialized += 1
         else:
-            companyName = key
-            soup_cleaner = clnr.default_clean_soup
-            
-            my_objects[companyName] = Company(companyName, soup_cleaner)
-            count_of_companies_initialized += 1
-            
+            if not isinstance(key, str):
+                print(key)
+                raise TypeError(f"company_name must be a string.")
+            if not isinstance(URLS[value], dict):
+                print(f"no souplocation in URLS[{self.companyName}]:")
+                print('''looking for dictionary: {["url", "html-tag", {"class" : "class-tag"}]}''')
+                
+            else:
+                soupLocation = value["location"]
+                companyName = key
+                if callable(value['function']):
+                    soup_cleaner = value['function']
+                    my_objects[companyName] = Company(companyName, soupLocation, soup_cleaner)
+                else:
+                    my_objects[companyName] = Company(companyName, soupLocation)
+                count_of_companies_initialized += 1
     print("")
     print(f"un-initialized companies: {count_of_companies_not_initialized}")
     print(f"initialized companies: {count_of_companies_initialized}")
