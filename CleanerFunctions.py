@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 # require : soup from beautiful soup
 # PC: return a dictionary names {company: [values]} where values has the cleaned up board directors
 
-def default_clean_soup(soup):
+def default_clean_soup(self, soup):
     contents = soup.find_all(self.soupLocation[1],self.soupLocation[2])
     values = [content.text.strip() for content in contents]
 

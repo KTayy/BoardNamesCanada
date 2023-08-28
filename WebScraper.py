@@ -6,29 +6,25 @@ import CleanerFunctions as clnr
 import GetNames as getnames
 
 initializedObjects = getnames.initialize_company_objects()
-test_soup = initializedObjects["CANADA LIFE"].dynamic_scraper()
-test_result = clnr.default_clean_soup(test_soup)
+#test_soup = initializedObjects["CANADA LIFE"].dynamic_scraper()
+#test_result = clnr.default_clean_soup(test_soup)
 
 
 # contents = test.find_all("h2",{"class": "bio-name"})
 # names = [content.text.strip() for content in contents]
-print(test)
 
 
-def trial_web_scraper(companyName):
-    test_soup = initializedObjects[companyName].dynamic_scraper()
+
+print(" ")
+for key in list(initializedObjects.keys())[:5]:
     print("=========")
     print("")
-    print(companyName)
+    print(key)
     print("")
-    print(test_soup)
-    print("")
+    test = initializedObjects[key].scrape_website()
+    print(test)
     print("=========")
 
-for company_name in list(initializedObjects.keys())[:5]:
-    if company_name in company_data:
-        print(f"Processing {company_name}: {company_data[company_name]}")
-        sample_method(company_name)
 
 
 

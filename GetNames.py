@@ -18,31 +18,38 @@ from urls import URLS
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 import CleanerFunctions as clnr
 
-# create class 
+
 class Company:
-# what to pass into soup.find_all https://www.crummy.com/software/BeautifulSoup/bs4/doc/#find-all   
-# soupLocation = [url, html-tag, {class = class-tag}]     
     def __init__(self, companyName: str, soup_cleaner): 
         
-         
+        #initializations 
         if not isinstance(companyName, str):
             raise TypeError("company_name must be a string.")
         else: 
             self.companyName = companyName
         
-        
         if not isinstance(URLS[self.companyName], dict):
-            raise TypeError(f"no souplocation in URLS[{self.companyName}] - it should be a dictionary\n[url, html-tag, {{class = class-tag}}]")
+            print(f"no souplocation in URLS[{self.companyName}] - it should be a dictionary\n[url, html-tag, {{class = class-tag}}]")
             
         elif "location" in URLS[self.companyName]:
             self.soupLocation = URLS[self.companyName]["location"]
-            self.soup_cleaner = soup_cleaner
             print(f"{self.companyName} - souplocation initialized")
+            if "function" in URLS[self.companyName]["location"]:
+                self.soup_cleaner = soup_cleaner
+                
+                
         
                 
+    def default_cleaner(self, soup):
+        contents = soup.find_all(self.soupLocation[1],self.soupLocation[2])
+        values = [content.text.strip() for content in contents]
+
+        names = {self.companyName : values }
+        return names
+    
     
     def dynamic_scraper(self):
-        url = self.soupLocation[0]
+        url = self.soupLocation[0] # soupLocation = [url, html-tag, {class = class-tag}]    
         def scraper_func(url):
             try:
                 driver = webdriver.Chrome()
@@ -68,7 +75,7 @@ class Company:
     
     def scrape_website(self):        
         soup = self.dynamic_scraper()
-        names = self.soup_cleaner(self,soup)
+        names = self.default_cleaner(self,soup)
         return names
     
     
@@ -81,17 +88,22 @@ class Company:
 def initialize_company_objects():
     my_objects = {}
     count_of_companies_initialized = 0
+    count_of_companies_not_initialized = 0
     count_of_companies = len(URLS)
     
     for key, value in URLS.items():
-        companyName = key
-        soup_cleaner = clnr.
- #       if "function" in value:
- #           soup_cleaner = value["function"]
-#            my_objects[companyName] = Company(companyName, soup_cleaner)
-#            count_of_companies_initialized += 1
-#        else:
-#            print(f"{key} has no board URL to check")
+        if "error_message" in value:
+            print(URLS[key]['error_message'])
+            count_of_companies_not_initialized += 1
+        else:
+            companyName = key
+            soup_cleaner = clnr.default_clean_soup
+            
+            my_objects[companyName] = Company(companyName, soup_cleaner)
+            count_of_companies_initialized += 1
+            
+    print("")
+    print(f"un-initialized companies: {count_of_companies_not_initialized}")
     print(f"initialized companies: {count_of_companies_initialized}")
     print(f"total companies tried: {count_of_companies}")
     return my_objects

@@ -14,16 +14,6 @@ URLS = {
             ],
         "function": clnr.otpp_clean_soup
     },
-
-    "UPP": 
-        {
-        "location": 
-            [
-            "https://myupp.ca/about-us/governance/#:~:text=The%20Board%20includes%20six%20Trustees,independent%2C%20jointly%2Dselected%20Chair.",
-            "elementor-heading-title elementor-size-default"
-            ],
-        "function": clnr.upp_clean_soup
-    },
         
 
     "OPB": 
@@ -354,16 +344,7 @@ URLS = {
         "function" :clnr.payments_clean_soup
         },
             
-                        
-        "PC BANK" : #static  ---- not available!!!!!!!!
-        {"location": 
-        [
-            "UNAVAILABLE",
-            "location1", 
-            {"location2": "location3"}
-        ]
-        },
-        
+        "PC BANK" :  {"error_message": "PC Bank has no board member page"},
                         
         "CANADA LIFE" : #static
         {"location":
@@ -411,12 +392,7 @@ URLS = {
         
         },
                         
-        "QUESTRADE" : #static ------ not availabe!!!!!!!
-        [
-            "unavailable",
-            "location1", 
-            {"location2": "location3"}
-        ],
+        "QUESTRADE" : { "error_message" : "Questrade is not a public company" },
         
                         
         "SAGICOR" : #static
@@ -450,7 +426,17 @@ URLS = {
             {"class": "mainContent"}
         ],
             "function" : clnr.vancity_clean_soup
-            }
+            },
+            
+        "UPP": 
+            {
+            "location": 
+                [
+                "https://myupp.ca/about-us/governance/#:~:text=The%20Board%20includes%20six%20Trustees,independent%2C%20jointly%2Dselected%20Chair.",
+                "elementor-heading-title elementor-size-default"
+                ],
+            "function": clnr.upp_clean_soup
+        }
         
     }
 
