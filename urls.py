@@ -71,8 +71,7 @@ URLS = {
                     "https://www.aimco.ca/who-we-are/governance",
                     "p", 
                     {"class": "person-name"}
-                ],
-            "function" : clnr.aimco_clean_soup
+                ]
             },
         
              
@@ -83,8 +82,7 @@ URLS = {
                     "https://www.manulife.com/en/about/corporate-governance/board-of-directors.html",
                     "div",
                     {"class" : "cmp-titletext"}
-                ],
-            "function" : clnr.manulife_clean_soup
+                ]
             },
                 
                 
@@ -93,8 +91,8 @@ URLS = {
                         
                 [
                     "https://www.nbc.ca/about-us/news-media/press-release/2023/20230421-nbc-election-directors.html",
-                    "div", 
-                    {"class": "text table_style aem-GridColumn aem-GridColumn--default--12"}
+                    "p", 
+                    {"style": "text-align: left"}
                 ],
             "function" : clnr.nbc_clean_soup
             },
@@ -107,8 +105,7 @@ URLS = {
                     "https://www.rbc.com/our-company/governance/index.html",
                     "h2", 
                     {"class": "h5 eh"}
-                ],
-            "function": clnr.rbc_clean_soup
+                ]
             }, 
             
             
@@ -118,7 +115,7 @@ URLS = {
                 [
                     "https://www.scotiabank.com/ca/en/about/our-company/board-of-directors.html",
                     "div", 
-                    {"class": "cmp cmp-text"}
+                    {"class": "row"}
                 ],
             "function" : clnr.scotiabank_clean_soup    
             },
@@ -130,7 +127,7 @@ URLS = {
                 [
                     "https://www.td.com/ca/en/about-td/corporate-profile/board-members",
                     "div", 
-                    {"class": "cmp cmp-text"}
+                    {"class": "cmp-teaser__content"}
                 ],
             "function" : clnr.td_clean_soup
             },
@@ -155,7 +152,8 @@ URLS = {
             "location" :
                 [
                     "https://www.bdc.ca/en/about/corporate-governance/board-of-directors",
-                    "h4"
+                    "div",
+                    {"class": "text-block-container flex-grow-1              "}
                 ],
             "function" : clnr.bdc_clean_soup
             },
@@ -177,7 +175,7 @@ URLS = {
         [
             "https://cib-bic.ca/en/about-us/governance/",
             "div", 
-            {"class": "person-title  font-semibold text-red-100 hover:underline text-xl-22"}
+            {"class": "grid md:grid-cols-2 xl:grid-cols-3 mt-12 sm:mt-20 mb-8 gap-y-20 gap-x-14"}
         ], 
             "function" : clnr.cib_clean_soup
             },

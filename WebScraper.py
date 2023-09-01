@@ -18,7 +18,7 @@ initializedObjects = getnames.initialize_company_objects()
 # print(names)
 
 
-for key in list(initializedObjects.keys())[5:10]:
+for key in list(initializedObjects.keys())[10:15]:
     print(" ")
     print("=========")
     print("")

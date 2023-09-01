@@ -4,7 +4,42 @@ from bs4 import BeautifulSoup
 # require : soup from beautiful soup
 # PC: return a dictionary names {company: [values]} where values has the cleaned up board directors
 
+def scotiabank_clean_soup(self, soup):
+    def extract_names(text):
+        potential_names = []
+        lines = text.split("\n")
+        for line in lines:
+            # Removing any unwanted details and special characters
+            line = re.sub(r'View details', '', line, flags=re.IGNORECASE)
+            line = re.sub(r'\(.*?\)', '', line)
+            line = line.strip()
 
+            # Filtering for potential names
+            if len(line.split()) <= 4 and not any(char.isdigit() for char in line):
+                potential_names.append(line)
+        return potential_names
+
+    names = []
+    for chunk in soup[self.companyName]:
+        names.extend(extract_names(chunk))
+
+    # Filter out empty names or names that don't seem valid
+    refined_names = [name for name in names if name and len(name.split()) > 1]
+
+    # Removing duplicates and filtering out non-names
+    refined_names = list(set(refined_names))
+    refined_names = [name for name in refined_names if not any(word in name.lower() for word in ["includes", "shares"])]
+
+    return {self.companyName: refined_names}
+
+
+
+def nbc_clean_soup(self,soup):   
+    data = soup[self.companyName]
+    names_raw = re.findall(r'([\w\s\.-]+)\s*Elected', data[0])
+    names_cleaned = [name.replace('\n', ' ').strip() for name in names_raw]
+    names = {self.companyName: names_cleaned}
+    return names
 
 
 def opb_clean_soup(self,soup):
@@ -34,55 +69,19 @@ def bmo_clean_soup(self,soup):
     # return names
 
 
-def aimco_clean_soup(self, soup):
-    print(soup)
-    # values = [] 
-    # for content in soup:
-    #     if content.name == 'p' and 'person-name' in content.get('class',[]):
-    #         name = content.get_text(strip=True)
-    #         values.append(name)
-    # names = {self.companyName: values}
-    # return content
-        
-    #     # p_tag = content.find('p')
-    #     # name = p_tag.text.strip()
-    #     # name = re.sub(r"\s",",", name)
-    #     # name = name.split(",")[0] + " " + name.split(",")[-1] 
-    #     # values.append(name)    
-    # names = {self.companyName: values}
-    # return names
 
 
 def aig_clean_soup(self, soup):
-    main_content_div = soup.find(self.soupLocation[1], self.soupLocation[2])
-    content = main_content_div.find_all(self.soupLocation[3], self.soupLocation[4])
-    values = []
-    for item in content:
-        name_element = item.find("h2")
-        if name_element:
-            names.append(name_element.text.strip())
-    names = {self.companyName: values}      
-    return names
+    print(soup)
 
 
 def bdc_clean_soup(self,soup):
-    name_tags = soup.find_all(self.soupLocation[1])
-    values = [name_tag.text.strip() for name_tag in name_tags]
-    names = {self.companyName:values}
-    return names
-
+    print(soup)
 
 
 def canadalife_clean_soup(self,soup):
-    contents = soup.find_all(self.soupLocation[1], self.soupLocation[2])
-    values = [content.text.strip() for content in contents]
-    # for content in soup:
-        #do something
-    
-    names = {self.companyName:values}
-    return values
+    print(soup)
 
-#################### ^^^^^^ done ^^^^^^ ################################
 
 
 def upp_clean_soup(self,soup):
@@ -93,6 +92,9 @@ def upp_clean_soup(self,soup):
     
     names = {self.companyName:[content.text for content in soup]}
     return names
+
+
+#################### ^^^^^^ done ^^^^^^ ################################
 
 
 
@@ -109,47 +111,13 @@ def cibc_clean_soup(self,soup):
 
 
 
-def manulife_clean_soup(self,soup):
-    print(soup)
-    # content = soup.find_all(class_ = self.soupLocation[1])
-    # values = []
-    # # for content in soup:
-    #     #do something
+
     
-    # names = {self.companyName:[content.text for content in soup]}
-    # return names
-
-
-
-def rbc_clean_soup(self,soup):
-    print(soup)
-    # content = soup.find_all(class_ = self.soupLocation[1])
-    # values = []
-    # # for content in soup:
-    #     #do something
     
-    # names = {self.companyName:[content.text for content in soup]}
-    # return names
-
-def scotiabank_clean_soup(self,soup):
-    print(soup)
-    # content = soup.find_all(class_ = self.soupLocation[1])
-    # values = []
-    # # for content in soup:
-    #     #do something
     
-    # names = {self.companyName:[content.text for content in soup]}
-    # return names
-
+    
 def td_clean_soup(self,soup):
     print(soup)
-    # content = soup.find_all(class_ = self.soupLocation[1])
-    # values = []
-    # # for content in soup:
-    #     #do something
-    
-    # names = {self.companyName:[content.text for content in soup]}
-    # return names
 
 
 
@@ -391,15 +359,8 @@ def psp_clean_soup(self,soup):
     # names = {self.companyName:[content.text for content in soup]}
     # return names
 
-def nbc_clean_soup(self,soup):
-    print(soup)
-    # content = soup.find_all(class_ = self.soupLocation[1])
-    # values = []
-    # # for content in soup:
-    #     #do something
-    
-    # names = {self.companyName:[content.text for content in soup]}
-    # return names
+ # might need fixing
+
 
 def questrade_clean_soup(self,soup):
     print(soup)
