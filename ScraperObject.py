@@ -11,37 +11,60 @@ future functionality:
 @author: ktayfour
 """
 
-
-
+import ast
+import openai
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from urls import URLS
+from LocationDatabase import DATABASE
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
-import openai
-
-openai.api_key = "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"
+from key import KEY
 
 
+openai.api_key = KEY
+
+class Company_Scraper:
+
+    """
+    A class that scrapes and cleans board pages for each company.
+    
+    Attributes:
+    - companyName (str): Name of the company to scrape.
+    - soupLocation (dict): HTML tag location of board members stored in LocationDatabase.
+    """
+    
+    
+    def __init__(self, companyName: str, soupLocation: dict):
+        """Initializes the scraper with company name and location."""
+        
+        self.companyName = companyName 
+        self.soupLocation = soupLocation    # html tag location of board members stored in LocationDatabase
 
 
-class Company:
-    def __init__(self, companyName: str, soupLocation: dict, soup_cleaner = None):
-        self.companyName = companyName
-        self.soupLocation = soupLocation
-        if soup_cleaner:
-            self.soup_cleaner = soup_cleaner
-
-    def scrape_website(self):        
+    def scrape_website(self):  
+        """
+        Scrapes the website and returns cleaned content.
+        
+        Returns:
+            dict: Cleaned content from the website.
+        """
         soup = self.dynamic_scraper()
         soup_cleaned = self.default_cleaner(soup)
         content = self.ai_cleaner(soup_cleaned)
-        # if hasattr(self, 'soup_cleaner') and callable(self.soup_cleaner):
-        #     content = self.soup_cleaner(self, soup=content)
-        #     return content
         return content
     
     
     def ai_cleaner(self, soup):
+                
+        """
+        Uses OpenAI's GPT-3.5 model to clean the scraped data.
+        
+        Args:
+            soup (BeautifulSoup): Scraped content from the website.
+        
+        Returns:
+            dict: Cleaned names from the provided soup.
+        """
+
         response = openai.ChatCompletion.create(
           model="gpt-3.5-turbo",
           messages= [
@@ -57,12 +80,26 @@ class Company:
           temperature=0,
           max_tokens=256
         )
-        values = response["choices"][0]["message"]["content"]
+        try:
+            values = ast.literal_eval(response["choices"][0]["message"]["content"])
+        except (ValueError, SyntaxError):
+            print(f"The provided string for {self.companyName} is not a valid Python literal. ")
+            return {self.companyName : "null" }
         names = {self.companyName : values }
         return names
             
         
     def default_cleaner(self, soup):
+        
+        """
+        Cleans the provided soup using default cleaning logic.
+        
+        Args:
+            soup (BeautifulSoup): Scraped content from the website.
+        
+        Returns:
+            dict: Cleaned names from the provided soup.
+        """
         contents = soup.find_all(self.soupLocation[1],self.soupLocation[2])
         values = [content.text.strip() for content in contents]
         names = {self.companyName : values }
@@ -70,6 +107,14 @@ class Company:
     
     
     def dynamic_scraper(self):
+
+        """
+        Uses a dynamic scraping method to fetch the content from the website.
+        
+        Returns:
+            BeautifulSoup: Scraped content from the website.
+        """
+
         url = self.soupLocation[0] # soupLocation = [url, html-tag, {class = class-tag}]    
         def scraper_func(url):
             try:
@@ -98,33 +143,37 @@ class Company:
     
 
     
-def initialize_company_objects():
+def initialize_company_scrapers():
+    
+    """
+    Initializes company scraper objects for each company in the DATABASE.
+    
+    Returns:
+        dict: Dictionary of initialized scraper objects.
+    """
+
     my_objects = {}
     count_of_companies_initialized = 0
     count_of_companies_not_initialized = 0
-    count_of_companies = len(URLS)
+    count_of_companies = len(DATABASE)
     
-    for key, value in URLS.items():
+    for key, value in DATABASE.items():
         if "error_message" in value:
-            print(URLS[key]['error_message'])
+            print(DATABASE[key]['error_message'])
             count_of_companies_not_initialized += 1
         else:
             if not isinstance(key, str):
                 raise TypeError(f"{key} company_name must be a string.")
             if not isinstance(value, dict):
-                print("no souplocation in URLS[{self.companyName}]:")
+                print("no souplocation in DATABASE[{self.companyName}]:")
                 print('''looking for dictionary: {["url", "html-tag", {"class" : "class-tag"}]}''')    
                 
             else:
                 soupLocation = value["location"]
                 companyName = key
-                if "function" in value and callable(value['function']):
-                    soup_cleaner = value['function']
-                    my_objects[companyName] = Company(companyName = companyName, soupLocation = soupLocation, soup_cleaner = soup_cleaner)
-                    count_of_companies_initialized += 1
-                else:
-                    my_objects[companyName] = Company(companyName = companyName, soupLocation = soupLocation)
-                    count_of_companies_initialized += 1
+                
+                my_objects[companyName] = Company_Scraper(companyName = companyName, soupLocation = soupLocation)
+                count_of_companies_initialized += 1
     print("")
     print(f"un-initialized companies: {count_of_companies_not_initialized}")
     print(f"initialized companies: {count_of_companies_initialized}")

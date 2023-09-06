@@ -1,7 +1,7 @@
 import CleanerFunctions as clnr
 
 
-URLS = {
+DATABASE = {
         
         
     "OTPP": 
