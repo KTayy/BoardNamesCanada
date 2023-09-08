@@ -32,7 +32,13 @@ class Company_Scraper:
     - soupLocation (dict): HTML tag location of board members stored in LocationDatabase.
     """
     
+    countScraperErrors = 0  
     
+    @classmethod
+    def count_scraper_Errors(cls):
+        cls.countScraperErrors += 1
+        print(f"number of errors encountered {cls.countScraperErrors}")
+        
     def __init__(self, companyName: str, soupLocation: dict):
         """Initializes the scraper with company name and location."""
         
@@ -47,9 +53,13 @@ class Company_Scraper:
         Returns:
             dict: Cleaned content from the website.
         """
-        soup = self.dynamic_scraper()
-        soup_cleaned = self.default_cleaner(soup)
-        content = self.ai_cleaner(soup_cleaned)
+        try:
+            soup = self.dynamic_scraper()
+            soup_cleaned = self.default_cleaner(soup)
+            content = self.ai_cleaner(soup_cleaned)
+        except Exception as e:
+            print(f"An error occurred for {self.companyName}: {e}")
+            return {self.companyName : f"{e}" }
         return content
     
     
@@ -64,22 +74,27 @@ class Company_Scraper:
         Returns:
             dict: Cleaned names from the provided soup.
         """
-
-        response = openai.ChatCompletion.create(
-          model="gpt-3.5-turbo",
-          messages= [
-              {
-                  "role": "system",
-                  "content": "You will be provided with unstructured data, and your task is to find the full names within it and return it in list format."
-                },
-              {
-              "role": "user",
-              "content" : str(soup[self.companyName])
-              }
-              ],
-          temperature=0,
-          max_tokens=256
-        )
+        
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You will be provided with unstructured data, and your task is to find the full names within it and return it in list format."
+                    },
+                    {
+                        "role": "user",
+                        "content": str(soup[self.companyName])
+                    }
+                ],
+                temperature=0,
+                max_tokens=256
+            )
+        except Exception as e:
+            print(f"An error occurred for {self.companyName}: {e}")
+            return {self.companyName : "error in parsing"}
+            
         try:
             values = ast.literal_eval(response["choices"][0]["message"]["content"])
         except (ValueError, SyntaxError):
@@ -119,8 +134,11 @@ class Company_Scraper:
         def scraper_func(url):
             try:
                 driver = webdriver.Chrome()
+                print("driver on")
                 driver.get(url)
+                print("got url")
                 driver.implicitly_wait(10)
+                print("waited")
                 html = driver.page_source
                 soup = BeautifulSoup(html, 'html.parser')
                 driver.quit()
@@ -138,7 +156,31 @@ class Company_Scraper:
             print(f"An error occurred: {error_message}")
         return result
     
-
+    def get_iframes_info(self):
+        """
+        Get information about iframes present in the given web page.
+        
+        Parameters:
+        - driver: The web driver instance.
+        
+        Returns:
+        - A list of names or ids of the iframes.
+        """
+        driver = self.soupLocation[0]
+        # Find all iframes on the page
+        iframes = driver.find_elements_by_tag_name('iframe')
+        
+        # Print the number of iframes
+        print(f"Number of iframes: {len(iframes)}")
+        
+        # Collect attributes of each iframe (like 'name' or 'id')
+        iframe_attributes = []
+        for iframe in iframes:
+            attr = iframe.get_attribute('name') or iframe.get_attribute('id')
+            iframe_attributes.append(attr)
+            print(attr)
+        
+        return iframe_attributes
     
     
 

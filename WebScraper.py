@@ -43,11 +43,12 @@ def scrape_board_members(initialized_objects):
         dict: Dictionary containing company names as keys and board members as values.
     """
     board_members = {}
-    
+    i = 0
     
     for key in list(initialized_objects.keys()):
+        i += 1
         print("\n" + "="*10 + "\n")
-        print(key)
+        print(i,": ", key)
         
         member_board = initialized_objects[key].scrape_website()
         board_members.update(member_board)

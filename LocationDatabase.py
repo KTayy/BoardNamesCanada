@@ -1,4 +1,4 @@
-import CleanerFunctions as clnr
+
 
 
 DATABASE = {
@@ -22,8 +22,8 @@ DATABASE = {
             "https://www.opb.ca/about-opb/board-of-directors",
             "div",
             {"class": "opb-board-content"}
-            ],
-        "function": clnr.opb_clean_soup
+            ]
+
     },
         
 
@@ -34,8 +34,8 @@ DATABASE = {
             "https://www.imcoinvest.com/board-of-directors.html",
             "h3",
             {"class": "a-heading__h3 a-heading__margin-small has-link"}
-            ],
-        "function" : clnr.imco_clean_soup
+            ]
+
     },
         
 
@@ -46,8 +46,7 @@ DATABASE = {
             "https://www.bmo.com/home/about/banking/corporate-governance/board-of-directors",
             "h2",
             {"class": "bio-name"}
-            ],
-        "function" : clnr.bmo_clean_soup
+            ]
     },
         
 
@@ -93,8 +92,7 @@ DATABASE = {
                     "https://www.nbc.ca/about-us/news-media/press-release/2023/20230421-nbc-election-directors.html",
                     "p", 
                     {"style": "text-align: left"}
-                ],
-            "function" : clnr.nbc_clean_soup
+                ]
             },
             
     
@@ -116,8 +114,7 @@ DATABASE = {
                     "https://www.scotiabank.com/ca/en/about/our-company/board-of-directors.html",
                     "div", 
                     {"class": "row"}
-                ],
-            "function" : clnr.scotiabank_clean_soup    
+                ]   
             },
         
         
@@ -128,8 +125,7 @@ DATABASE = {
                     "https://www.td.com/ca/en/about-td/corporate-profile/board-members",
                     "div", 
                     {"class": "cmp-teaser__content"}
-                ],
-            "function" : clnr.td_clean_soup
+                ]
             },
 
                 
@@ -140,8 +136,7 @@ DATABASE = {
                     "https://www.aig.com/home/about/leadership-and-governance",
                     "div", 
                     {"class": 'cmp-teaser__description'},
-                ],
-            "function" : clnr.aig_clean_soup
+                ]
             },
             
             
@@ -152,8 +147,7 @@ DATABASE = {
                     "https://www.bdc.ca/en/about/corporate-governance/board-of-directors",
                     "div",
                     {"class": "text-block-container flex-grow-1              "}
-                ],
-            "function" : clnr.bdc_clean_soup
+                ]
             },
             
             
@@ -163,8 +157,7 @@ DATABASE = {
             "https://www.cdic.ca/about-us/organizational-structure/our-board-of-directors/cdic-board-of-directors-biographies/",
             "p", 
             {"class": "h4"}
-        ],  
-            "function" : clnr.cdic_clean_soup
+        ]
             },
             
                         
@@ -173,9 +166,8 @@ DATABASE = {
         [
             "https://cib-bic.ca/en/about-us/governance/",
             "div", 
-            {"class": "grid md:grid-cols-2 xl:grid-cols-3 mt-12 sm:mt-20 mb-8 gap-y-20 gap-x-14"}
-        ], 
-            "function" : clnr.cib_clean_soup
+            {"class": "person-title font-medium text-red-100 hover:underline text-xl-22"}
+        ]
             },
             
                         
@@ -185,8 +177,7 @@ DATABASE = {
                 "https://www.cmhc-schl.gc.ca/about-us/management-and-governance/board-of-directors-and-its-committees",
                 "div", 
                 {"class": "imageTilesContent"}
-            ],
-            "function" : clnr.cmhc_clean_soup
+            ]
             },
                         
         "CDPQ" : {
@@ -195,8 +186,7 @@ DATABASE = {
                 "https://www.cdpq.com/en/about-us/governance/board-directors",
                 "h3", 
                 {"class": "title-sm-bio mb-1 pb__fullname"}
-            ],
-            "function": clnr.cdpq_clean_soup
+            ]
             },
                         
         "CPPIB" : {
@@ -205,8 +195,7 @@ DATABASE = {
             "https://www.cppinvestments.com/about-us/governance/board-of-directors/",
             "h2", 
             {"class": "card-header-text"}
-        ],
-            "function" : clnr.cppib_clean_soup
+        ]
             },
             
             
@@ -216,8 +205,7 @@ DATABASE = {
             "https://www.definityfinancial.com/English/investors/governance/board-of-directors/default.aspx",
             "h2", 
             {"class": "person_name person_name--president h3 no-top--desktop no-top--tablet"}
-        ],
-        "function" : clnr.defenity_clean_soup
+        ]
         },
         
                         
@@ -227,8 +215,7 @@ DATABASE = {
             "https://www.desjardins.com/ca/about-us/desjardins/governance-democracy/board-directors/index.jsp",
             "H3", 
             {"class": "titre"}
-        ],
-        "function" : clnr.desjardins_clean_soup
+        ]
         },
                         
         
@@ -238,8 +225,7 @@ DATABASE = {
             "https://eqbank.investorroom.com/board-directors",
             "h2", 
             {"class": "wd_title"}
-        ], 
-        "function": clnr.equitable_clean_soup
+        ]
         },
         
                         
@@ -249,8 +235,7 @@ DATABASE = {
             "https://www.edc.ca/en/about-us/corporate/management-governance.html",
             "span", 
             {"class": "name"}
-        ],
-        "function":clnr.edc_clean_soup
+        ]
         },
             
             
@@ -263,8 +248,7 @@ DATABASE = {
             "https://www.hometrust.ca/about/our-story/leadership/",
             "div", 
             {"class": "service_title"}
-        ], 
-        "function" : clnr.home_clean_soup
+        ]
         },
                 
                         
@@ -274,8 +258,7 @@ DATABASE = {
             "https://www.ieso.ca/en/Corporate-IESO/Leadership/Board-of-Directors",
             "div", 
             {"class": "sidebarBlock richText "}
-        ],
-            "function":clnr.ieso_clean_soup
+        ]
             },
                  
                 
@@ -285,8 +268,7 @@ DATABASE = {
             "https://www.laurentianbank.ca/en/about-us/our-company/board-of-directors",
             "h3",
             {"class": "font-bold leading-[1.1em] text-3xl text-brand-web-lbc-blue"}
-        ],
-        "function" : clnr.laurentian_clean_soup},
+        ]},
                         
             
         "MERIDIAN" : #static
@@ -295,8 +277,7 @@ DATABASE = {
             "https://www.meridiancu.ca/about-meridian/corporate/governance/board-of-directors",
             "h2", 
             {"class": "small-margin"}
-        ],
-        "function" : clnr.meridian_clean_soup},
+        ]},
                      
             
             
@@ -306,8 +287,7 @@ DATABASE = {
             "https://www.munichre.com/en/company/about-munich-re/board-of-management/members.html",
             "h2", 
             {"class": "cmp-title__text"}
-        ],
-        "function": clnr.munich_clean_soup
+        ]
          },
          
                         
@@ -317,8 +297,7 @@ DATABASE = {
             "https://www.omers.com/board-of-directors",
             "span", 
             {"class": "bold"}
-        ],
-        "function": clnr.omers_clean_soup
+        ]
         },
 
                 
@@ -327,8 +306,7 @@ DATABASE = {
         [
             "https://www.optrust.com/aboutoptrust/Board-of-Trustees.asp",
             "h5"
-        ],
-        "function" : clnr.optrust_clean_soup
+        ]
             },
         
         
@@ -338,8 +316,7 @@ DATABASE = {
         [
             "https://payments.ca/about/governance-risk/board-directors",
             "h3"
-        ],
-        "function" :clnr.payments_clean_soup
+        ]
         },
             
         "PC BANK" :  {"error_message": "PC Bank has no board member page"},
@@ -350,8 +327,7 @@ DATABASE = {
             "https://www.canadalife.com/about-us/governance/board-of-directors.html",
             "span", 
             {"class": "n-card__title-link has-no-margins-around n:my-0"}
-        ],
-        "function" :clnr.canadalife_clean_soup
+        ]
         },
             
             
@@ -363,8 +339,7 @@ DATABASE = {
             "https://www.igmfinancial.com/en/governance",
             "b" 
             #{"class": "location2"}
-        ],
-        "function" : clnr.igm_clean_soup},
+        ]},
             
                         
         "MACKENZIE INVESTMENTS" : #static
@@ -373,9 +348,8 @@ DATABASE = {
             "https://www.mackenzieinvestments.com/en/about-us/leadership-team",
             "p", 
             {"class": "text-primary type-medium margin-bottom-none padding-bottom-none  padding-top-sm"}
-        ],
-        "function" : clnr.mackenzie_clean_soup},
-            
+        ]
+            },
             
                         
         "PSP INVESTMENTS" : #static
@@ -385,8 +359,7 @@ DATABASE = {
             "https://www.investpsp.com/en/psp/board/",
             "div", 
             {"class": "tp-people-name"}
-        ],
-        "function" : clnr.psp_clean_soup
+        ]
         
         },
                         
@@ -399,8 +372,7 @@ DATABASE = {
             "https://www.sagicor.com/en/about-sagicor/board-of-directors",
             "h4", 
             #{"location2": "location3"}
-        ],
-        "function": clnr.sagicor_clean_soup
+        ]
         },
         
                         
@@ -410,8 +382,7 @@ DATABASE = {
             "https://www.sunlife.com/en/about-us/leadership/board-of-directors/",
             "div", 
             {"class": "col-sm-6"}
-        ],
-        "function" : clnr.sunlife_clean_soup
+        ]
         },
         
             
@@ -422,8 +393,7 @@ DATABASE = {
             "https://www.vancity.com/AboutVancity/GovernanceAndLeadership/BoardofDirectors/CurrentBoard/",
             "div", 
             {"class": "mainContent"}
-        ],
-            "function" : clnr.vancity_clean_soup
+        ]
             },
             
         "UPP": 
@@ -432,8 +402,7 @@ DATABASE = {
                 [
                 "https://myupp.ca/about-us/governance/#:~:text=The%20Board%20includes%20six%20Trustees,independent%2C%20jointly%2Dselected%20Chair.",
                 "elementor-heading-title elementor-size-default"
-                ],
-            "function": clnr.upp_clean_soup
+                ]
         }
         
     }
